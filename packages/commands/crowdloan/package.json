@@ -1,0 +1,58 @@
+{
+    "name": "@centrifuge-cli/crowdloan-command",
+    "description": "Command used to manage Polkadot/Kusama crowdloan auctions for parachain slot acquisition or renewal",
+    "version": "0.1.0",
+    "author": "Centrifuge Foundation <admin@centrifuge.io>",
+    "homepage": "https://github.com/centrifuge/centrifuge-cli#README.md",
+    "bugs": {"url": "https://github.com/centrifuge/centrifuge-cli/issues"},
+    "license": "Apache-2.0",
+    "keywords": [
+      "centrifuge",
+      "centrifuge-cli",
+      "chain-command"
+    ],
+    "type": "module",
+    "main": "dist/index.js",
+    "exports": {
+        ".": "./dist/index.js",
+        "./*": "./dist/*",
+        "./package.json": "./package.json"
+    },
+    "typesVersions": {
+        "*": { 
+            "*": ["dist/*"]
+        }
+    },
+    "repository": {
+      "type": "git",
+      "directory": "packages/commands/crowdloan",
+      "url": "https://github.com/centrifuge/centrifuge-cli.git"
+    },
+    "engines": {
+      "node": ">=14.17.4"
+    },
+    "scripts": {
+      "clean": "rimraf dist node_modules tsconfig.tsbuildinfo .nyc_output",
+      "compile": "tsc --build && cp ./package.json ./dist/",
+      "build": "yarn clean && yarn compile",
+      "lint": "eslint src/**/*.ts --max-warnings=0 --config .eslintrc.json --ignore-path .eslintignore",
+      "lint:fix": "eslint --fix src/**/*.ts",
+      "pretest": "tsc -p test --noEmit",
+      "posttest": "yarn lint",
+      "test": "nyc --extension .ts mocha --forbid-only test/**/*.test.ts",
+      "prepack": "yarn build",
+      "postpack": "rm -f oclif.manifest.json",
+      "version": "oclif-dev readme && git add README.md"    
+    },
+    "dependencies": {
+      "@centrifuge-cli/core": "^0.1.0",
+      "commander": "^8.3.0"
+    },
+
+    "devDependencies": {
+    },
+    
+    "files": [
+      "src"
+    ]
+}

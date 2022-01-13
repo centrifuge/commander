@@ -1,0 +1,17 @@
+import { Context } from "../interfaces";
+
+export function command(arguments: string[] | string, options?: {exitOverride?: boolean, suppressOutput?: boolean }) {
+    // Configuration
+    if (options?.exitOverride) {
+      program.exitOverride();
+    }
+    if (options?.suppressOutput) {
+      program.configureOutput({
+        writeOut: () => {},
+        writeErr: () => {}
+      });
+    }
+  return {
+    async run(context: context) {
+  }
+}

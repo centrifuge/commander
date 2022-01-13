@@ -1,0 +1,65 @@
+{
+    "name": "@centrifuge-cli/application",
+    "description": "Centrifuge ecosystem at your finger tips",
+    "version": "0.1.1",
+    "author": "Centrifuge Foundation <hello@centrifuge.io>",
+    "homepage": "https://github.com/centrifuge/centrifuge-cli#README.md",
+    "bugs": {"url": "https://github.com/centrifuge/centrifuge-cli/issues"},
+    "license": "Apache-2.0",
+    "keywords": [
+      "centrifuge",
+      "centrifuge-cli",
+      "application"
+    ],
+    "type": "module",
+    "main": "./dist/application.js",
+    "bin": {
+      "centrifuge": "./bin/run.js"
+    },
+    "exports": {
+      ".": "./dist/application.js",
+      "./package.json": "./package.json",
+      "./wizards/*": null
+    },
+    "typesVersions": {
+        "*": { 
+            "*": ["dist/*"]
+        }
+    },
+    "repository": {
+      "type": "git",
+      "directory": "packages/libraries/core",
+      "url": "https://github.com/centrifuge/centrifuge-cli.git"
+    },
+    "engines": {
+      "node": ">=14.17.4"
+    },
+    "scripts": {
+      "clean": "rimraf dist node_modules tsconfig.tsbuildinfo .nyc_output",
+      "compile": "tsc --build && cp ./package.json ./dist/",
+      "build": "yarn compile",
+      "lint": "eslint src/**/*.ts --max-warnings=0 --config .eslintrc.json --ignore-path .eslintignore",
+      "lint:fix": "eslint --fix src/**/*.ts",
+      "pretest": "tsc -p test --noEmit",
+      "posttest": "yarn lint",
+      "test": "nyc --extension .ts mocha --forbid-only test/**/*.test.ts",
+      "prepack": "yarn build",
+      "postpack": "rm -f oclif.manifest.json",
+      "version": "oclif-dev readme && git add README.md"    
+    },
+    
+    "dependencies": {
+      "@centrifuge-cli/core": "^0.1.0",
+      "@centrifuge-cli/chain-command": "^0.1.0",
+      "@centrifuge-cli/setup-command": "^0.1.0",
+      "@centrifuge-cli/crowdloan-command": "^0.1.0",
+      "cli-progress-footer": "^2.3.0",
+      "cli-ux": "^5.6.0",
+      "commander": "^8.3.0",
+      "inquirer": "^8.2.0"
+    },
+
+    "devDependencies": {
+      "@types/inquirer": "^8.1.3"
+    }
+}

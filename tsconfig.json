@@ -1,0 +1,14 @@
+{
+  "references": [
+    // Application
+    { "path": "./packages/application" },
+
+    // Libraries
+    { "path": "./packages/libraries/core" },
+
+    // Commands
+    { "path": "./packages/commands/chain" },
+    { "path": "./packages/commands/setup" },
+    { "path": "./packages/commands/crowdloan" }
+  ]
+}

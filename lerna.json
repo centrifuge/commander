@@ -1,0 +1,35 @@
+{
+  "version": "independent",
+  "useWorkspaces": true,
+  "npmClient": "yarn",
+  "npmClientArgs": [
+    "--no-lockfile"
+  ],
+  "stream": true,
+  "command": {
+    "version": {
+      "message": "chore(release): publish %s",
+      "ignoreChanges": [
+        "*.txt",
+        "*.md",
+        "yarn.lock"
+      ]
+    },
+    "publish": {
+      "message": "chore(release): publish %s",
+      "registry": "https://npm.pkg.github.com",
+      "conventionalCommits": true,
+      "allowBranch": "master",
+      "ignoreChanges": [
+        "*.txt",
+        "*.md",
+        "yarn.lock"
+      ]
+    }
+  },
+  "packages": [
+    "packages/application",
+    "packages/libraries/*",
+    "packages/commands/*"
+  ]
+}

@@ -1,0 +1,7 @@
+node_modules
+packages/application/*/dist
+packages/libraries/*/dist
+packages/commands/*/dist
+coverage
+dist
+jest.*.js
