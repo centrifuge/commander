@@ -8,6 +8,7 @@
 
     // Commands
     { "path": "./packages/commands/chain" },
+    { "path": "./packages/commands/claims" },
     { "path": "./packages/commands/setup" },
     { "path": "./packages/commands/crowdloan" }
   ]

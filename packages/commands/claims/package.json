@@ -1,22 +1,26 @@
 {
-    "name": "@centrifuge-commander/crowdloan-command",
-    "description": "Command used to manage Polkadot/Kusama crowdloan auctions for parachain slot acquisition or renewal",
+    "name": "@centrifuge-commander/claims-command",
+    "description": "Command used to migrate Tinlake reward claims from standalone Centrifuge chain to a parachain (e.g. Altair)",
     "version": "0.1.0",
-    "author": "Centrifuge Foundation <admin@centrifuge.io>",
-    "homepage": "https://github.com/centrifuge/centrifuge-commander#README.md",
-    "bugs": {"url": "https://github.com/centrifuge/centrifuge-commander/issues"},
+    "author": "Centrifuge Foundation <hello@centrifuge.io>",
+    "homepage": "https://github.com/centrifuge/commander#README.md",
+    "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
     "license": "Apache-2.0",
     "keywords": [
       "centrifuge",
-      "centrifuge-commander",
-      "chain-command"
+      "cli",
+      "commander",
+      "console",
+      "claims",
+      "rewards"
     ],
     "type": "module",
-    "main": "dist/index.js",
+    "main": "dist/command.js",
     "exports": {
-        ".": "./dist/index.js",
-        "./*": "./dist/*",
-        "./package.json": "./package.json"
+        ".": "./dist/command.js",
+        "./command": "./dist/command.js",
+        "./actions/*": null,
+        "./package.json": "./dist/package.json"
     },
     "typesVersions": {
         "*": { 
@@ -25,8 +29,8 @@
     },
     "repository": {
       "type": "git",
-      "directory": "packages/commands/crowdloan",
-      "url": "https://github.com/centrifuge/centrifuge-commander.git"
+      "directory": "packages/commands/claims",
+      "url": "https://github.com/centrifuge/commander.git"
     },
     "engines": {
       "node": ">=14.17.4"
@@ -34,7 +38,7 @@
     "scripts": {
       "clean": "rimraf dist node_modules tsconfig.tsbuildinfo .nyc_output",
       "compile": "tsc --build && cp ./package.json ./dist/",
-      "build": "yarn clean && yarn compile",
+      "build": "yarn compile",
       "lint": "eslint src/**/*.ts --max-warnings=0 --config .eslintrc.json --ignore-path .eslintignore",
       "lint:fix": "eslint --fix src/**/*.ts",
       "pretest": "tsc -p test --noEmit",
@@ -44,15 +48,11 @@
       "postpack": "rm -f oclif.manifest.json",
       "version": "oclif-dev readme && git add README.md"    
     },
+
     "dependencies": {
       "@centrifuge-commander/core": "^0.1.0",
-      "commander": "^8.3.0"
-    },
-
-    "devDependencies": {
-    },
-    
-    "files": [
-      "src"
-    ]
+      "@polkadot/api": "^7.7.1",
+      "cli-ux": "^5.6.0",
+      "commander": "^9.0.0"
+    }
 }

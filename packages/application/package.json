@@ -1,14 +1,16 @@
 {
-    "name": "@centrifuge-cli/application",
+    "name": "@centrifuge-commander/application",
     "description": "Centrifuge ecosystem at your finger tips",
     "version": "0.1.1",
     "author": "Centrifuge Foundation <hello@centrifuge.io>",
-    "homepage": "https://github.com/centrifuge/centrifuge-cli#README.md",
-    "bugs": {"url": "https://github.com/centrifuge/centrifuge-cli/issues"},
+    "homepage": "https://github.com/centrifuge/commander#README.md",
+    "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
     "license": "Apache-2.0",
     "keywords": [
       "centrifuge",
-      "centrifuge-cli",
+      "cli",
+      "commander",
+      "console,",
       "application"
     ],
     "type": "module",
@@ -29,7 +31,7 @@
     "repository": {
       "type": "git",
       "directory": "packages/libraries/core",
-      "url": "https://github.com/centrifuge/centrifuge-cli.git"
+      "url": "https://github.com/centrifuge/commander.git"
     },
     "engines": {
       "node": ">=14.17.4"
@@ -49,17 +51,18 @@
     },
     
     "dependencies": {
-      "@centrifuge-cli/core": "^0.1.0",
-      "@centrifuge-cli/chain-command": "^0.1.0",
-      "@centrifuge-cli/setup-command": "^0.1.0",
-      "@centrifuge-cli/crowdloan-command": "^0.1.0",
+      "@centrifuge-commander/core": "^0.1.0",
+      "@centrifuge-commander/chain-command": "^0.1.0",
+      "@centrifuge-commander/claims-command": "^0.1.0",
+      "@centrifuge-commander/setup-command": "^0.1.0",
+      "@centrifuge-commander/crowdloan-command": "^0.1.0",
       "cli-progress-footer": "^2.3.0",
-      "cli-ux": "^5.6.0",
-      "commander": "^8.3.0",
+      "cli-ux": "^6.0.0",
+      "commander": "^9.0.0",
       "inquirer": "^8.2.0"
     },
 
     "devDependencies": {
-      "@types/inquirer": "^8.1.3"
+      "@types/inquirer": "^8.2.0"
     }
 }

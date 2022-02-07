@@ -1,14 +1,14 @@
 {
-    "name": "@centrifuge-cli/chain-command",
+    "name": "@centrifuge-commander/chain-command",
     "description": "Command used to manage local or remote Centrifuge network",
     "version": "0.1.0",
     "author": "Centrifuge Foundation <admin@centrifuge.io>",
-    "homepage": "https://github.com/centrifuge/centrifuge-cli#README.md",
-    "bugs": {"url": "https://github.com/centrifuge/centrifuge-cli/issues"},
+    "homepage": "https://github.com/centrifuge/centrifuge-commander#README.md",
+    "bugs": {"url": "https://github.com/centrifuge/centrifuge-commander/issues"},
     "license": "Apache-2.0",
     "keywords": [
       "centrifuge",
-      "centrifuge-cli",
+      "centrifuge-commander",
       "chain-command"
     ],
     "type": "module",
@@ -27,7 +27,7 @@
     "repository": {
       "type": "git",
       "directory": "packages/commands/chain",
-      "url": "https://github.com/centrifuge/centrifuge-cli.git"
+      "url": "https://github.com/centrifuge/centrifuge-commander.git"
     },
     "engines": {
       "node": ">=14.17.4"
@@ -47,7 +47,7 @@
     },
 
     "dependencies": {
-      "@centrifuge-cli/core": "^0.1.0",
+      "@centrifuge-commander/core": "^0.1.0",
       "cli-ux": "^5.6.0",
       "commander": "^8.3.0"
     }

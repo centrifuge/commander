@@ -1,5 +1,5 @@
-import { BaseCommand } from '@centrifuge-cli/core/command';
-//import colors from '@centrifuge-cli/core/colors.js';
+import { BaseCommand } from '@centrifuge-commander/core/command';
+//import colors from '@centrifuge-commander/core/colors.js';
 //import { cli } from 'cli-ux';
 
 /*
