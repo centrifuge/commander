@@ -1,16 +1,14 @@
 import { BaseCommand } from '@centrifuge-commander/core/command';
-//import colors from '@centrifuge-commander/core/colors.js';
-//import { cli } from 'cli-ux';
+import { ClaimsCommandController, PolkadotClient } from '../packages/index.js';
 
 /*
  * Migrate claims command options.
  */
-interface MigrateClaimsCommandOptions {
-  config?: string;
-  fromUrl: string;
-  toUrl: string;
-  fromBlock: string;
-}
+// interface MigrateClaimsCommandOptions {
+//   fromUrl?: string;
+//   toUrl?: string;
+//   fromBlock?: string;
+// }
 
 /**
  * Reward claims migration command class.
@@ -34,13 +32,20 @@ export class MigrateClaimsCommand extends BaseCommand {
    */
   protected initialize(): void {
     this.description('Migrate Tinlake reward claims from Centrifuge chain to a parachain')
+      .requiredOption('-f, --from <wsUrl>', 'WebSocket URL of the source chain')
+      .requiredOption('-t, --to <wsUrl>', 'WebSocket URL of the target parachain')
+      .requiredOption('-b, --block <number>', 'Number of the block which stored the latest claims root hash on the source chain')
       .addHelpText(
         'after',
         `
   Examples:
-    $ centrifuge claims migrate --from_url --to_url --from_blockconfig ./standalone-chain.json`,
+    $ centrifuge claims migrate --from ws://localhost:9446 --to ws://localhost:9944 --block 655221`,
       )
-      .action(this.execute.bind(this));
+      .action(() => {
+        const options = this.opts();
+        this.execute(options.from as string, options.to as string, options.block as string);
+      });
+//    .action(this.execute(this.opts().from, this.opts().to, this.opts().block).bind(this));
   }
 
   /**
@@ -53,13 +58,18 @@ export class MigrateClaimsCommand extends BaseCommand {
   /*
    * Handle command action.
    *
-   * @param {string} chain Argument containing the name of the chain to be started.
-   * @param {ChainStartCommandOptions} options List of options passed at command-line.
+   * @param {string} fromUrl Source chain's WebSocket URL.
+   * @param {string} toUrl Target parachain's WebSocket URL.
+   * @param {string} fromBlockNumber Number of the block where latest rootoptions List of options passed at command-line.
    */
-  private execute(fromUrl: string, toUrl: string, fromBlock: string, options: MigrateClaimsCommandOptions): void {
-    console.log(`  from URL:  ${fromUrl}`);
-    if (options.config) {
-      console.log(`  config file: ${options.config}`);
-    }
+  private async execute(fromUrl: string, toUrl: string, fromBlockNumber: string) {
+    console.log(
+      `Enter MigrateClaimsCommand.execute(fromUrl: ${fromUrl}, toUrl: ${toUrl}, fromBlockNumber: ${fromBlockNumber})`,
+    );
+
+    const controller = new ClaimsCommandController();
+    await controller.connect(fromUrl, toUrl, PolkadotClient.SEED_ALICE);
+    await controller.migrate(fromBlockNumber);
+    await controller.disconnect();
   }
 }

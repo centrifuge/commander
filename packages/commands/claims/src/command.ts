@@ -6,7 +6,7 @@ import { MigrateClaimsCommand } from './actions/migrate.js';
  *
  * This command is mainly used for migrating Tinlake reward claims from the standalone
  * Centrifuge chain to a parachain such as Altair or running locally.
- * 
+ *
  * ## Usage
  * This command is used as follows:
  */
@@ -44,7 +44,7 @@ export class ClaimsCommand extends BaseCommand {
         'after',
 `
 Examples:
-  $ centrifuge claimsn migrate ...`,
+  $ centrifuge claims migrate ...`,
       )
       .addCommand(new MigrateClaimsCommand());
   }

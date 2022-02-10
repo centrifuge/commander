@@ -2,7 +2,7 @@
     "name": "@centrifuge-commander/application",
     "description": "Centrifuge ecosystem at your finger tips",
     "version": "0.1.1",
-    "author": "Centrifuge Foundation <hello@centrifuge.io>",
+    "author": "Centrifuge Contributors <hello@centrifuge.io>",
     "homepage": "https://github.com/centrifuge/commander#README.md",
     "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
     "license": "Apache-2.0",

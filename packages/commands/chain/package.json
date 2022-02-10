@@ -2,7 +2,7 @@
     "name": "@centrifuge-commander/chain-command",
     "description": "Command used to manage local or remote Centrifuge network",
     "version": "0.1.0",
-    "author": "Centrifuge Foundation <admin@centrifuge.io>",
+    "author": "Centrifuge Contributors <hello@centrifuge.io>",
     "homepage": "https://github.com/centrifuge/centrifuge-commander#README.md",
     "bugs": {"url": "https://github.com/centrifuge/centrifuge-commander/issues"},
     "license": "Apache-2.0",
@@ -41,9 +41,7 @@
       "pretest": "tsc -p test --noEmit",
       "posttest": "yarn lint",
       "test": "nyc --extension .ts mocha --forbid-only test/**/*.test.ts",
-      "prepack": "yarn build",
-      "postpack": "rm -f oclif.manifest.json",
-      "version": "oclif-dev readme && git add README.md"    
+      "prepack": "yarn build"
     },
 
     "dependencies": {
