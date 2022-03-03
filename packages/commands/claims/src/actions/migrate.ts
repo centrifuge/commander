@@ -32,8 +32,11 @@ export class MigrateClaimsCommand extends BaseCommand {
    */
   protected initialize(): void {
     this.description('Migrate Tinlake reward claims from Centrifuge chain to a parachain')
+      // eslint-disable-next-line prettier/prettier
+      .option('-c, --config <filePath>', 'Path of a JSON/YAML configuration file (instead of using command-line options)')
       .requiredOption('-f, --from <wsUrl>', 'WebSocket URL of the source chain')
       .requiredOption('-t, --to <wsUrl>', 'WebSocket URL of the target parachain')
+      // eslint-disable-next-line prettier/prettier
       .requiredOption('-b, --block <number>', 'Number of the block which stored the latest claims root hash on the source chain')
       .addHelpText(
         'after',
@@ -43,6 +46,7 @@ export class MigrateClaimsCommand extends BaseCommand {
       )
       .action(() => {
         const options = this.opts();
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.execute(options.from as string, options.to as string, options.block as string);
       });
 //    .action(this.execute(this.opts().from, this.opts().to, this.opts().block).bind(this));
@@ -63,9 +67,8 @@ export class MigrateClaimsCommand extends BaseCommand {
    * @param {string} fromBlockNumber Number of the block where latest rootoptions List of options passed at command-line.
    */
   private async execute(fromUrl: string, toUrl: string, fromBlockNumber: string) {
-    console.log(
-      `Enter MigrateClaimsCommand.execute(fromUrl: ${fromUrl}, toUrl: ${toUrl}, fromBlockNumber: ${fromBlockNumber})`,
-    );
+    // eslint-disable-next-line prettier/prettier
+    console.log(`Enter MigrateClaimsCommand.execute(fromUrl: ${fromUrl}, toUrl: ${toUrl}, fromBlockNumber: ${fromBlockNumber})`);
 
     const controller = new ClaimsCommandController();
     await controller.connect(fromUrl, toUrl, PolkadotClient.SEED_ALICE);

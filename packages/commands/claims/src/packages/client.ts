@@ -17,9 +17,12 @@ export class PolkadotClient {
   public static SEED_ALICE = '//Alice';
   public static SEED_BOB = '//Bob';
 
-  // Alice and Bob account addresses (for testing purpose)
+  // Alice and Bob account addresses on Rococo relay chain (for testing purpose)
   public static ALICE_ADDRESS = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
   public static BOB_ADDRESS = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
+
+  // Alice address on parachain (for testing purpose)
+  public static PARACHAIN_ALICE_ADDRESS = 'kAMx1vYzEvumnpGcd6a5JL6RPE2oerbr6pZszKPFPZby2gLLF';
 
   /*
    * Build a new instance of Polkadot client
@@ -56,6 +59,14 @@ export class PolkadotClient {
    */
   async disconnect(): Promise<void> {
     return this.api.disconnect();
+  }
+
+  /**
+   * Return client Sudo key.
+   */
+  public async getSudoKey(): Promise<string> {
+    const key = await this.api.query.sudo.key();
+    return key.toString();
   }
 
   /**

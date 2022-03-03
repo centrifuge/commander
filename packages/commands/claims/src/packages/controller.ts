@@ -1,13 +1,16 @@
 /* eslint-disable prettier/prettier */
-//import { ApiPromise, WsProvider } from '@polkadot/api';
+import { ApiPromise, WsProvider, Keyring } from '@polkadot/api';
 import { Hash, BlockHash, SignedBlock } from '@polkadot/types/interfaces';
 import { PolkadotClient } from './client.js';
 import chalk from 'chalk';
-import { ApiPromise, Keyring, WsProvider } from '@polkadot/api';
+//import {StorageKey} from "@polkadot/types";
+//import { Twox128Hasher } from '@centrifuge-commander/core/crypto';
+//import { stringToHex } from '@polkadot/util';
+import { Twox128Hasher } from '@centrifuge-commander/core/crypto';
 
 
 /**
- * Reward claims migrator class.
+ * Reward claims migrator command controller class.
  *
  * This class is used for extracting unclaimed rewards from Centrifuge chain to parachain.
  */
@@ -28,6 +31,10 @@ export class ClaimsCommandController {
   private static PALLET_CLAIMS = 'radClaims';
   private static METHOD_STORE_ROOT_HASH = 'storeRootHash';
 
+//  private static PARACHAIN_ALICE_ADDRESS = "kAMx1vYzEvumnpGcd6a5JL6RPE2oerbr6pZszKPFPZby2gLLF";
+  // Command to launch parachain
+  // PARA_CHAIN_SPEC=development-local ./scripts/init.sh start-parachain
+
   // --------------------------------------------------------------------------------------------
   // Public methods
   // --------------------------------------------------------------------------------------------
@@ -42,7 +49,7 @@ export class ClaimsCommandController {
    * @param toUrl   Websocket URL of the target parachain (collator node).
    * @param seed    Seed account to be used to establish transactions with the target parachain (e.g. '//Alice').
    */
-  async connect(fromUrl: string, toUrl: string, seed: string) {
+  async connect(fromUrl: string, toUrl: string, seed: string): Promise<void> {
 
     // Open the connection to source chain
     this.chainClient = await PolkadotClient.connect(fromUrl);
@@ -54,7 +61,7 @@ export class ClaimsCommandController {
     ]);
 
     // eslint-disable-next-line prettier/prettier
-    console.log(`  ... ${chalk.greenBright('✓')} connected to chain '${chalk.blueBright(chain)}' on node '${chalk.blueBright(chainNode)}'`);
+    console.log(`  ${chalk.greenBright('✓')} connected to chain '${chalk.blueBright(chain)}' on node '${chalk.blueBright(chainNode)}'`);
 
     // Open a connection on the target parachain
     this.parachainClient = await PolkadotClient.connect(toUrl);
@@ -66,26 +73,15 @@ export class ClaimsCommandController {
     ]);
 
     // eslint-disable-next-line prettier/prettier
-    console.log(`  ... ${chalk.greenBright('✓')} connected to parachain '${chalk.blueBright(collator)}' on node '${chalk.blueBright(collatorNode)}' with seed ${chalk.blueBright(seed)}`);
+    console.log(`  ${chalk.greenBright('✓')} connected to parachain '${chalk.blueBright(collator)}' on node '${chalk.blueBright(collatorNode)}' with seed ${chalk.blueBright(seed)}`);
 
-    // Add a new keyring pair for the given raw seed to the keyring dictionary
-    const seedAccount = this.parachainClient.addKeyringPair(seed);
-
-    // Authenticates the current sudo key and sets the given seed account as the new Sudo
-    this.parachainClient.api.tx.sudo.setKey(seedAccount.address);
-
-    // Get the current sudo key in the system
+    // Get current parachain Sudo key
     const sudoKey = await this.parachainClient.api.query.sudo.key();
-    if (sudoKey.toString() === seedAccount.address) {
-      console.log(`  ... ${chalk.greenBright('✓')} parachain Sudo key set to account ${chalk.blueBright(seed)}`);
-    } else {
-      // eslint-disable-next-line prettier/prettier
-      console.log(`  >>> [${chalk.redBright('ERROR')}] cannot set parachain Sudo key to ${chalk.blueBright(seedAccount.address)}`);
-    }
+    console.log(`     ${chalk.whiteBright('>')} parachain Sudo key is ${chalk.blueBright(sudoKey.toHuman())}`);
   }
 
   // Close connections to source chain and target parachain
-  async disconnect() {
+  async disconnect(): Promise<void> {
     if (this.chainClient) await this.chainClient.disconnect();
     if (this.parachainClient) await this.parachainClient.disconnect();
   }
@@ -110,7 +106,7 @@ export class ClaimsCommandController {
     try {
       // Extract block hash from the input block number
       const blockHash: BlockHash = await this.chainClient.api.rpc.chain.getBlockHash(fromBlockNumber);
-      console.info(`  ... ${chalk.greenBright('✓')} checked input block number ${chalk.blueBright(fromBlockNumber)}`);
+      console.info(`  ${chalk.greenBright('✓')} checked input block number ${chalk.blueBright(fromBlockNumber)}`);
 //      console.info(`        > input block hash: ${chalk.blueBright(blockHash.toHex())}`);
 
       // Get signed block
@@ -131,7 +127,7 @@ export class ClaimsCommandController {
           const rootHashValue = args[0];
 
           // eslint-disable-next-line prettier/prettier
-          console.info(`  ... ${chalk.greenBright('✓')} latest ${chalk.blueBright('radClaims(store_root_hash)')} root_hash value is ${chalk.blueBright(rootHashValue)}`);
+          console.info(`  ${chalk.greenBright('✓')} latest ${chalk.blueBright('radClaims(store_root_hash)')} root_hash value is ${chalk.blueBright(rootHashValue)}`);
 
 /*
           console.log(`      > extrinsic id ${fromBlockNumber}-${index}`);
@@ -146,10 +142,14 @@ export class ClaimsCommandController {
             console.log(`        signer:     ${extrinsic.signer.toString()}, nonce=${extrinsic.nonce.toString()}`);
           }
 */
-          // Migrate root hash (containing latest reward claims) to the target parachain
-          await this.migrateRootHash(rootHashValue as Hash);
-          await this.setBalance();
-        }
+          this.listUsers()
+
+          // Migrate root hash (containing latest reward claims) and claimed amounts at once
+          await Promise.all([
+            this.migrateRootHash(rootHashValue as Hash),
+            this.migrateClaimedAmounts(),
+          ]);
+        }        
       });
     } catch (error) {
       console.error(`Error`);
@@ -173,12 +173,10 @@ export class ClaimsCommandController {
    * @param rootHash Latest root hash that is stored in 'radClaims'
    */
   private async migrateRootHash(rootHash: Hash): Promise<void> {
-    return;
-
     if (this.parachainClient === undefined) return;
 
     // Initialise the provider to connect to the local node
-    const provider = new WsProvider('ws://127.0.0.1:9944');
+    const provider = new WsProvider('ws://127.0.0.1:9946');
 
     // Create the API and wait until ready (optional provider passed through)
     const api = await ApiPromise.create({ provider });
@@ -223,27 +221,69 @@ export class ClaimsCommandController {
       .catch(err => console.log(err));
   }
 
-  private async setBalance(): Promise<void> {
-    // Initialise the provider to connect to the local node
-    const provider = new WsProvider('ws://127.0.0.1:9944');
+  /*
+   * Migrate claimed amounts storage item.
+   */
+  private async migrateClaimedAmounts(): Promise<void> {
+    // // Initialise the provider to connect to the local node
+    // const provider = new WsProvider(ClaimsCommandController.LOCAL_CENTRIFUGE_PARACHAIN_COLLATOR_URL);
 
-    // Create the API and wait until ready (optional provider passed through)
-    const api = await ApiPromise.create({ provider });
+    // // Create the API and wait until ready (optional provider passed through)
+    // const api = await ApiPromise.create({ provider });
 
-    const keyring = new Keyring({ type: 'sr25519' });
-    const keyringPair = keyring.addFromUri('//Alice');
-    
-    const transaction = api.tx.balances.setBalance(PolkadotClient.BOB_ADDRESS, 5000, 2000);
+    // const keyring = new Keyring({ type: 'sr25519' });
+    // const keyringPair = keyring.addFromUri('//Alice');
+
+    // Retrieve the upgrade key from the chain state
+    const sudoKey = await this.parachainClient.api.query.sudo.key();
+    console.log(`Sudo key value: ${sudoKey.toString()}`);
+
+
+    //const transaction = this.parachainClient.api.tx.balances.setBalance(PolkadotClient.BOB_ADDRESS, 10000, 2000);
 
     // eslint-disable-next-line prettier/prettier
-    const unsub = await api.tx.sudo
-      .sudo(transaction)
-      .signAndSend(keyringPair, ({ status, events }) => {
-        if (status.isInBlock || status.isFinalized) {
-          console.log(`Balance set successfully`);
-        }
-        unsub();
-    });
+    // const unsub = await api.tx.sudo
+    //   .sudo(transaction)
+    //   .signAndSend(keyringPair, ({ status, events }) => {
+    //     if (status.isInBlock || status.isFinalized) {
+    //       console.log(`Balance set successfully`);
+    //     }
+    //     unsub();
+    // });
+  }
+
+  /**
+   * List all users stored on the parachain.
+   * 
+   * See https://www.shawntabrizi.com/substrate/transparent-keys-in-substrate/
+   */
+  private listUsers(): string {
+    const storageKeyPrefix = this.calculateStorageKeyPrefix('System', 'Account');
+
+    console.log( `Storage key prefix for parachain 'System.Account'`);
+
+    return storageKeyPrefix;
+  }
+
+  /* 
+    * Calculate the storage key for a given module and storage.
+    *
+    * The storage key prefix concatenates the hash of the module's name to the hash of the storage
+    * name, as shown below:
+    *
+    *    Module name (here 'System') hash   + Storage name (here 'Account') hash
+    *    twox_128("System")                 + twox_128("Account")
+    *    ----------------------------------   ----------------------------------
+    *    0x26aa394eea5630e07c48ae0c9558cef7 + 0xb99d880ec681799c0cf30e8886371da9
+    * => 0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9
+    */
+  private calculateStorageKeyPrefix( moduleName: string, storageName: string ): string {
+    const hasher = new Twox128Hasher();
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const prefix = hasher.hash(moduleName) + hasher.hash(storageName);
+    
+    return prefix;
   }
 }
 

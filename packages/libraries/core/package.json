@@ -18,6 +18,7 @@
     "exports": {
         "./command": "./dist/command.js",
         "./colors": "./dist/colors.js",
+        "./crypto": "./dist/crypto/index.js",
         "./decorators": "./dist/decorators/index.js",
         "./interfaces": "./dist/interfaces/index.js",
         "./utilities": "./dist/utilities.js",
