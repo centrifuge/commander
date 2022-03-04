@@ -1,11 +1,8 @@
-# `core`
+# Centrifuge Commander Application Module
 
-> TODO: description
+This module is the Centrifuge Commander's main module.
 
+...
 ## Usage
 
-```
-const core = require('core');
-
-// TODO: DEMONSTRATE API
-```
+...

@@ -1,15 +1,18 @@
 {
-    "name": "@centrifuge-cli/crowdloan-command",
+    "name": "@centrifuge-commander/crowdloan-command",
     "description": "Command used to manage Polkadot/Kusama crowdloan auctions for parachain slot acquisition or renewal",
     "version": "0.1.0",
-    "author": "Centrifuge Foundation <admin@centrifuge.io>",
-    "homepage": "https://github.com/centrifuge/centrifuge-cli#README.md",
-    "bugs": {"url": "https://github.com/centrifuge/centrifuge-cli/issues"},
+    "author": "Centrifuge Contributors <hello@centrifuge.io>",
+    "homepage": "https://github.com/centrifuge/commander#README.md",
+    "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
     "license": "Apache-2.0",
     "keywords": [
+      "auction",
       "centrifuge",
-      "centrifuge-cli",
-      "chain-command"
+      "cli",
+      "commander",
+      "console",
+      "crowdloan-command"
     ],
     "type": "module",
     "main": "dist/index.js",
@@ -26,7 +29,7 @@
     "repository": {
       "type": "git",
       "directory": "packages/commands/crowdloan",
-      "url": "https://github.com/centrifuge/centrifuge-cli.git"
+      "url": "https://github.com/centrifuge/commander.git"
     },
     "engines": {
       "node": ">=14.17.4"
@@ -45,7 +48,7 @@
       "version": "oclif-dev readme && git add README.md"    
     },
     "dependencies": {
-      "@centrifuge-cli/core": "^0.1.0",
+      "@centrifuge-commander/core": "^0.1.0",
       "commander": "^8.3.0"
     },
 

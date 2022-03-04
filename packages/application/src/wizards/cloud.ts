@@ -1,7 +1,7 @@
 import inquirer, { ListQuestion, PasswordQuestion } from 'inquirer';
 import { WelcomeWizardData } from './welcome';
-import { AWSCloudProvider, AWSCloudProviderErrors } from '@centrifuge-cli/core/cloud/aws.js';
-import { Obfuscator } from '@centrifuge-cli/core/obfuscator';
+import { AWSCloudProvider, AWSCloudProviderErrors } from '@centrifuge-commander/core/cloud/aws.js';
+import { Obfuscator } from '@centrifuge-commander/core/obfuscator';
 
 /**
  * Data gathered by AWS configuration wizard.

@@ -1,5 +1,5 @@
 #!/usr/bin/env node --experimental-json-modules
 
-import { Application } from '@centrifuge-cli/application';
+import { Application } from '@centrifuge-commander/application';
 
 await new Application().run();

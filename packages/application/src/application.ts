@@ -4,10 +4,11 @@
  * @module
  */
 
-import { BaseCommand } from '@centrifuge-cli/core/command';
-import { ChainCommand } from '@centrifuge-cli/chain-command/command';
-import { SetupCommand } from '@centrifuge-cli/setup-command/command';
-import colors from '@centrifuge-cli/core/colors';
+import { BaseCommand } from '@centrifuge-commander/core/command';
+import { ChainCommand } from '@centrifuge-commander/chain-command/command';
+import { ClaimsCommand } from '@centrifuge-commander/claims-command/command';
+import { SetupCommand } from '@centrifuge-commander/setup-command/command';
+import colors from '@centrifuge-commander/core/colors';
 import { existsSync, mkdirSync } from 'fs';
 import { homedir } from 'os';
 import { join, normalize } from 'path';
@@ -20,7 +21,7 @@ import { join, normalize } from 'path';
  * Script Module (or ESM) standard (see 'bin/run.js' script, for instance).
  * The 'assert' directive is mandatory (as explained in https://nodejs.org/api/esm.html#import-assertions).
  */
-import packageInfo from '@centrifuge-cli/application/package.json' assert { type: 'json' };
+//import packageInfo from '@centrifuge-commander/application/package.json' assert { type: 'json' };
 
 /**
  * Application's main command.
@@ -30,7 +31,7 @@ import packageInfo from '@centrifuge-cli/application/package.json' assert { type
  *
  * ## Example
  * ```typescript
- * import { Application } from '@centrifuge-cli/application';
+ * import { Application } from '@centrifuge-commander/application';
  *
  *  await new Application().run();
  * ```
@@ -74,10 +75,12 @@ Use ${colors.command('centrifuge [command] --help')} for more information on a c
    */
   protected initialize(): void {
     this.name(Application.Name)
-      .version(packageInfo.version)
+//      .version(packageInfo.version)
+      .version("0.1.0")
       .description(Application.Description)
       .addHelpText('after', Application.Help)
       .addCommand(new ChainCommand())
+      .addCommand(new ClaimsCommand())
       .addCommand(new SetupCommand());
   }
 
@@ -88,7 +91,7 @@ Use ${colors.command('centrifuge [command] --help')} for more information on a c
    *
    * @example:
    * ```typescript
-   * import { Application } from '@centrifuge-cli/application';
+   * import { Application } from '@centrifuge-commander/application';
    *
    * await new Application().run();
    * ```

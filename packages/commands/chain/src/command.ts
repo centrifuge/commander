@@ -1,4 +1,4 @@
-import { BaseCommand } from '@centrifuge-cli/core/command';
+import { BaseCommand } from '@centrifuge-commander/core/command';
 import { ChainCreateCommand } from './actions/create.js';
 import { ChainStartCommand } from './actions/start.js';
 

@@ -1,7 +1,7 @@
 import inquirer, { ConfirmQuestion, ListQuestion } from 'inquirer';
 //import { Application } from '../application.js';
 import { CloudProviderType, LanguageType } from '../types.js';
-import { colors } from '@centrifuge-cli/core/colors';
+import { colors } from '@centrifuge-commander/core/colors';
 import { AWSConfigurationWizard } from './cloud.js';
 
 /* basic preferences data */

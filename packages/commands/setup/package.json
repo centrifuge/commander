@@ -1,14 +1,16 @@
 {
-  "name": "@centrifuge-cli/setup-command",
-  "description": "Command used for setting up Centrifuge CLI's environment",
+  "name": "@centrifuge-commander/setup-command",
+  "description": "Command used for setting up Centrifuge Commander's environment",
   "version": "0.1.0",
-  "author": "Centrifuge Foundation <admin@centrifuge.io>",
-  "homepage": "https://github.com/centrifuge/centrifuge-cli#README.md",
-  "bugs": {"url": "https://github.com/centrifuge/centrifuge-cli/issues"},
+  "author": "Centrifuge Contributors <hello@centrifuge.io>",
+  "homepage": "https://github.com/centrifuge/commander#README.md",
+  "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
   "license": "Apache-2.0",
   "keywords": [
     "centrifuge",
-    "centrifuge-cli",
+    "cli",
+    "commander",
+    "console",
     "setup-command"
   ],
   "type": "module",
@@ -27,7 +29,7 @@
   "repository": {
     "type": "git",
     "directory": "packages/commands/setup",
-    "url": "https://github.com/centrifuge/centrifuge-cli.git"
+    "url": "https://github.com/centrifuge/commander.git"
   },
   "engines": {
     "node": ">=14.17.4"
@@ -41,12 +43,10 @@
     "pretest": "tsc -p test --noEmit",
     "posttest": "yarn lint",
     "test": "nyc --extension .ts mocha --forbid-only test/**/*.test.ts",
-    "prepack": "yarn build",
-    "postpack": "rm -f oclif.manifest.json",
-    "version": "oclif-dev readme && git add README.md"    
+    "prepack": "yarn build"
   },
   "dependencies": {
-    "@centrifuge-cli/core": "^0.1.0",
+    "@centrifuge-commander/core": "^0.1.0",
     "cli-ux": "^5.6.0",
     "commander": "^8.3.0"
   },

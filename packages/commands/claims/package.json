@@ -1,7 +1,7 @@
 {
-    "name": "@centrifuge-commander/application",
-    "description": "Centrifuge ecosystem at your finger tips",
-    "version": "0.1.1",
+    "name": "@centrifuge-commander/claims-command",
+    "description": "Command used to migrate Tinlake reward claims from standalone Centrifuge chain to a parachain (e.g. Altair)",
+    "version": "0.1.0",
     "author": "Centrifuge Contributors <hello@centrifuge.io>",
     "homepage": "https://github.com/centrifuge/commander#README.md",
     "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
@@ -10,18 +10,18 @@
       "centrifuge",
       "cli",
       "commander",
-      "console,",
-      "application"
+      "console",
+      "claims",
+      "rewards"
     ],
     "type": "module",
-    "main": "./dist/application.js",
-    "bin": {
-      "centrifuge": "./bin/run.js"
-    },
+    "main": "dist/command.js",
     "exports": {
-      ".": "./dist/application.js",
-      "./package.json": "./package.json",
-      "./wizards/*": null
+        ".": "./dist/command.js",
+        "./command": "./dist/command.js",
+        "./actions/*": null,
+        "./controller": "./dist/packages/controller.js",
+        "./package.json": "./dist/package.json"
     },
     "typesVersions": {
         "*": { 
@@ -30,7 +30,7 @@
     },
     "repository": {
       "type": "git",
-      "directory": "packages/libraries/core",
+      "directory": "packages/commands/claims",
       "url": "https://github.com/centrifuge/commander.git"
     },
     "engines": {
@@ -45,24 +45,14 @@
       "pretest": "tsc -p test --noEmit",
       "posttest": "yarn lint",
       "test": "nyc --extension .ts mocha --forbid-only test/**/*.test.ts",
-      "prepack": "yarn build",
-      "postpack": "rm -f oclif.manifest.json",
-      "version": "oclif-dev readme && git add README.md"    
-    },
-    
-    "dependencies": {
-      "@centrifuge-commander/core": "^0.1.0",
-      "@centrifuge-commander/chain-command": "^0.1.0",
-      "@centrifuge-commander/claims-command": "^0.1.0",
-      "@centrifuge-commander/setup-command": "^0.1.0",
-      "@centrifuge-commander/crowdloan-command": "^0.1.0",
-      "cli-progress-footer": "^2.3.0",
-      "cli-ux": "^6.0.0",
-      "commander": "^9.0.0",
-      "inquirer": "^8.2.0"
+      "prepack": "yarn build"
     },
 
-    "devDependencies": {
-      "@types/inquirer": "^8.2.0"
+    "dependencies": {
+      "@centrifuge-commander/core": "^0.1.0",
+      "@polkadot/api": "^7.7.1",
+      "chalk": "^5.0.0",
+      "cli-ux": "^5.6.0",
+      "commander": "^9.0.0"
     }
 }

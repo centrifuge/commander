@@ -1,4 +1,4 @@
-import { BaseCommand } from '@centrifuge-cli/core/command';
+import { BaseCommand } from '@centrifuge-commander/core/command';
 
 /*
  * Show setup command options.
