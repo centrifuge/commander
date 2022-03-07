@@ -8,11 +8,29 @@ Building Centrifuge Commander is simple:
 
 ```sh
 $ yarn
-$ yarn run build
+$ yarn build
 ```
 
 ## Run Commander locally
 
 ```sh
 $ ./packages/application/bin/run.js --help
+```
+
+## Build on M1 machines
+
+We have been facing issues trying to build this repo on Apple M1 machines.
+
+Alternatively, you can opt to run it in a docker container:
+
+```
+# Build a node Docker container
+docker container run --rm -it --volume `pwd`:/commander node bash;
+cd commander
+
+# Install dependencies
+yarn
+
+# Build the project
+yarn build
 ```
