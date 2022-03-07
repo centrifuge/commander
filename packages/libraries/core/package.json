@@ -1,93 +1,99 @@
 {
-    "name": "@centrifuge-commander/core",
-    "description": "Common helper functions used for implementing Centrifuge CLI",
-    "version": "0.1.0",
-    "author": "Centrifuge Contributors <hello@centrifuge.io>",
-    "homepage": "https://github.com/centrifuge/commander#README.md",
-    "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
-    "license": "Apache-2.0",
-    "keywords": [
-      "centrifuge",
-      "cli",
-      "commander",
-      "core-library",
-      "library"
-    ],
-    "type": "module",
-    "main": "dist/index.js",
-    "exports": {
-        "./command": "./dist/command.js",
-        "./colors": "./dist/colors.js",
-        "./crypto": "./dist/crypto/index.js",
-        "./decorators": "./dist/decorators/index.js",
-        "./interfaces": "./dist/interfaces/index.js",
-        "./utilities": "./dist/utilities.js",
-        "./test": "./dist/test/index.js",
-        "./aws": "./dist/cloud/aws.js",
-        "./obfuscator": "./dist/obfuscator.js"
-    },
-    "typesVersions": {
-        "*": { 
-            "*": ["dist/*"]
-        }
-    },
-    "repository": {
-      "type": "git",
-      "directory": "packages/libraries/core",
-      "url": "https://github.com/centrifuge/commander.git"
-    },
-    "engines": {
-      "node": ">=14.17.4"
-    },
-    "scripts": {
-      "clean": "rimraf dist node_modules tsconfig.tsbuildinfo .nyc_output coverage",
-      "compile": "tsc --build && cp ./package.json ./dist/",
-      "build": "yarn compile",
-      "lint": "eslint src/**/*.ts --max-warnings=0 --config .eslintrc.json --ignore-path .eslintignore",
-      "lint:fix": "eslint --fix src/**/*.ts",
-      "pretest": "tsc -p tests --noEmit",
-      "posttest": "yarn lint",
-      "test": "nyc mocha --forbid-only --loader=ts-node/esm 'tests/**/*.test.ts'",
-      "prepack": "yarn build"
-    },
-    "dependencies": {
-      "@aws-sdk/client-ec2": "^3.49.0",
-      "ajv": "^8.10.0",
-      "ansi-styles": "^6.1.0",
-      "chalk": "^5.0.0",
-      "commander": "^9.0.0",
-      "ini": "^2.0.0",
-      "strip-ansi": "^7.0.0",
-      "supports-color": "^9.2.0",
-      "unique-names-generator": "^4.6.0"
-    },
-    "devDependencies": {
-      "@types/chai": "^4.3.0",
-      "@types/ini": "^1.3.31",
-      "@types/mocha": "^9.1.0",
-      "@types/node": "^17.0.0",
-      "@types/supports-color": "^8.1.0",
-      "chai": "^4.3.0",
-      "fancy-test": "^2.0.0",
-      "husky": "^7.0.0",
-      "lint-staged": "^12.1.0",
-      "mocha": "^9.1.0",
-      "nyc": "^15.1.0",
-      "ts-node": "^10.4.0",
-      "ts-node-esm": "^0.0.6"
-    },
-    
-    "nyc": {
-      "exclude": [
-        "**/spec/**",
-        "node_modules"
-      ],
-
-      "reporter": [
-        "lcov",
-        "text-summary"
+  "name": "@centrifuge-commander/core",
+  "description": "Common helper functions used for implementing Centrifuge CLI",
+  "version": "0.1.0",
+  "author": "Centrifuge Contributors <hello@centrifuge.io>",
+  "homepage": "https://github.com/centrifuge/commander#README.md",
+  "bugs": {
+    "url": "https://github.com/centrifuge/commander/issues"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "centrifuge",
+    "cli",
+    "commander",
+    "core-library",
+    "library"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    "./command": "./dist/command.js",
+    "./colors": "./dist/colors.js",
+    "./crypto": "./dist/crypto/index.js",
+    "./decorators": "./dist/decorators/index.js",
+    "./interfaces": "./dist/interfaces/index.js",
+    "./utilities": "./dist/utilities.js",
+    "./test": "./dist/test/index.js",
+    "./aws": "./dist/cloud/aws.js",
+    "./obfuscator": "./dist/obfuscator.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*"
       ]
-    },
-
-    "files":[ "dist", "package.json", "README.md" ]
-  }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "directory": "packages/libraries/core",
+    "url": "https://github.com/centrifuge/commander.git"
+  },
+  "engines": {
+    "node": ">=14.17.4"
+  },
+  "scripts": {
+    "clean": "rimraf dist node_modules tsconfig.tsbuildinfo .nyc_output coverage",
+    "compile": "tsc --build && cp ./package.json ./dist/",
+    "build": "yarn compile",
+    "lint": "eslint src/**/*.ts --max-warnings=0 --config .eslintrc.json --ignore-path .eslintignore",
+    "lint:fix": "eslint --fix src/**/*.ts",
+    "pretest": "tsc -p tests --noEmit",
+    "posttest": "yarn lint",
+    "test": "nyc mocha --forbid-only --loader=ts-node/esm 'tests/**/*.test.ts'",
+    "prepack": "yarn build"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ec2": "^3.49.0",
+    "ajv": "^8.10.0",
+    "ansi-styles": "^6.1.0",
+    "chalk": "^5.0.0",
+    "commander": "^9.0.0",
+    "ini": "^2.0.0",
+    "strip-ansi": "^7.0.0",
+    "supports-color": "^9.2.0",
+    "unique-names-generator": "^4.6.0",
+    "@polkadot/util-crypto": "^8.4.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/ini": "^1.3.31",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.0",
+    "@types/supports-color": "^8.1.0",
+    "chai": "^4.3.0",
+    "fancy-test": "^2.0.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^12.1.0",
+    "mocha": "^9.1.0",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.4.0",
+    "ts-node-esm": "^0.0.6"
+  },
+  "nyc": {
+    "exclude": [
+      "**/spec/**",
+      "node_modules"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ]
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ]
+}
