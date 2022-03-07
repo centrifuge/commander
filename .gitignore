@@ -19,3 +19,6 @@ yarn-error.log
 tsconfig.tsbuildinfo
 **/tsconfig.tsbuildinfo
 .vscode
+
+v8-compile-cache-0
+yarn--*
