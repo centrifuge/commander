@@ -3,10 +3,8 @@ import { ApiPromise, WsProvider, Keyring } from '@polkadot/api';
 import { Hash, BlockHash, SignedBlock } from '@polkadot/types/interfaces';
 import { PolkadotClient } from './client.js';
 import chalk from 'chalk';
-//import {StorageKey} from "@polkadot/types";
-//import { Twox128Hasher } from '@centrifuge-commander/core/crypto';
-//import { stringToHex } from '@polkadot/util';
-import { Twox128Hasher } from '@centrifuge-commander/core/crypto';
+// import { Twox128Hasher } from '@centrifuge-commander/core/crypto';
+import { xxhashAsHex } from '@polkadot/util-crypto';
 
 
 /**
@@ -31,7 +29,7 @@ export class ClaimsCommandController {
   private static PALLET_CLAIMS = 'radClaims';
   private static METHOD_STORE_ROOT_HASH = 'storeRootHash';
 
-//  private static PARACHAIN_ALICE_ADDRESS = "kAMx1vYzEvumnpGcd6a5JL6RPE2oerbr6pZszKPFPZby2gLLF";
+  //  private static PARACHAIN_ALICE_ADDRESS = "kAMx1vYzEvumnpGcd6a5JL6RPE2oerbr6pZszKPFPZby2gLLF";
   // Command to launch parachain
   // PARA_CHAIN_SPEC=development-local ./scripts/init.sh start-parachain
 
@@ -107,7 +105,7 @@ export class ClaimsCommandController {
       // Extract block hash from the input block number
       const blockHash: BlockHash = await this.chainClient.api.rpc.chain.getBlockHash(fromBlockNumber);
       console.info(`  ${chalk.greenBright('✓')} checked input block number ${chalk.blueBright(fromBlockNumber)}`);
-//      console.info(`        > input block hash: ${chalk.blueBright(blockHash.toHex())}`);
+      //      console.info(`        > input block hash: ${chalk.blueBright(blockHash.toHex())}`);
 
       // Get signed block
       const signedBlock: SignedBlock = await this.chainClient.api.rpc.chain.getBlock(blockHash);
@@ -129,19 +127,19 @@ export class ClaimsCommandController {
           // eslint-disable-next-line prettier/prettier
           console.info(`  ${chalk.greenBright('✓')} latest ${chalk.blueBright('radClaims(store_root_hash)')} root_hash value is ${chalk.blueBright(rootHashValue)}`);
 
-/*
-          console.log(`      > extrinsic id ${fromBlockNumber}-${index}`);
-          console.log(`        hash:        ${extrinsic.hash.toHex()}`);
-          console.log(`        tx pallet:   ${section}`);
-          console.log(`        tx method:   ${method}`);
-          console.log(`        tx roothash: ${rootHash.toString()}`);
-          console.log(`        meta:        ${meta.toString()}`);
-
-          console.log(`        ${section}.${method}(${args.map(a => a.toString()).join(', ')})`);
-          if (isSigned) {
-            console.log(`        signer:     ${extrinsic.signer.toString()}, nonce=${extrinsic.nonce.toString()}`);
-          }
-*/
+          /*
+                    console.log(`      > extrinsic id ${fromBlockNumber}-${index}`);
+                    console.log(`        hash:        ${extrinsic.hash.toHex()}`);
+                    console.log(`        tx pallet:   ${section}`);
+                    console.log(`        tx method:   ${method}`);
+                    console.log(`        tx roothash: ${rootHash.toString()}`);
+                    console.log(`        meta:        ${meta.toString()}`);
+          
+                    console.log(`        ${section}.${method}(${args.map(a => a.toString()).join(', ')})`);
+                    if (isSigned) {
+                      console.log(`        signer:     ${extrinsic.signer.toString()}, nonce=${extrinsic.nonce.toString()}`);
+                    }
+          */
           this.listUsers()
 
           // Migrate root hash (containing latest reward claims) and claimed amounts at once
@@ -149,7 +147,7 @@ export class ClaimsCommandController {
             this.migrateRootHash(rootHashValue as Hash),
             this.migrateClaimedAmounts(),
           ]);
-        }        
+        }
       });
     } catch (error) {
       console.error(`Error`);
@@ -260,7 +258,7 @@ export class ClaimsCommandController {
   private listUsers(): string {
     const storageKeyPrefix = this.calculateStorageKeyPrefix('System', 'Account');
 
-    console.log( `Storage key prefix for parachain 'System.Account'`);
+    console.log(`Storage key prefix for parachain 'System.Account'`);
 
     return storageKeyPrefix;
   }
@@ -277,13 +275,27 @@ export class ClaimsCommandController {
     *    0x26aa394eea5630e07c48ae0c9558cef7 + 0xb99d880ec681799c0cf30e8886371da9
     * => 0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9
     */
-  private calculateStorageKeyPrefix( moduleName: string, storageName: string ): string {
+  private calculateStorageKeyPrefix(moduleName: string, storageName: string): string {
     const hasher = new Twox128Hasher();
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const prefix = hasher.hash(moduleName) + hasher.hash(storageName);
-    
+
     return prefix;
   }
 }
 
+export interface Hasher {
+  hash(input: string | Uint8Array): string;
+}
+
+export class Twox128Hasher implements Hasher {
+  public hash(input: string | Uint8Array): string {
+    /* Note:
+     * We use XXHash to output a 128 bit hash. However, XXHash only supports 32 bit and 64 bit outputs. 
+     * To correctly generate the 128 bit hash, we need to hash the same phrase twice, with seed 0 and seed 1, 
+     * and concatenate them.
+     */
+    return xxhashAsHex(input, 128).slice(2);
+  }
+}

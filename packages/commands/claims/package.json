@@ -1,58 +1,62 @@
 {
-    "name": "@centrifuge-commander/claims-command",
-    "description": "Command used to migrate Tinlake reward claims from standalone Centrifuge chain to a parachain (e.g. Altair)",
-    "version": "0.1.0",
-    "author": "Centrifuge Contributors <hello@centrifuge.io>",
-    "homepage": "https://github.com/centrifuge/commander#README.md",
-    "bugs": {"url": "https://github.com/centrifuge/commander/issues"},
-    "license": "Apache-2.0",
-    "keywords": [
-      "centrifuge",
-      "cli",
-      "commander",
-      "console",
-      "claims",
-      "rewards"
-    ],
-    "type": "module",
-    "main": "dist/command.js",
-    "exports": {
-        ".": "./dist/command.js",
-        "./command": "./dist/command.js",
-        "./actions/*": null,
-        "./controller": "./dist/packages/controller.js",
-        "./package.json": "./dist/package.json"
-    },
-    "typesVersions": {
-        "*": { 
-            "*": ["dist/*"]
-        }
-    },
-    "repository": {
-      "type": "git",
-      "directory": "packages/commands/claims",
-      "url": "https://github.com/centrifuge/commander.git"
-    },
-    "engines": {
-      "node": ">=14.17.4"
-    },
-    "scripts": {
-      "clean": "rimraf dist node_modules tsconfig.tsbuildinfo .nyc_output",
-      "compile": "tsc --build && cp ./package.json ./dist/",
-      "build": "yarn compile",
-      "lint": "eslint src/**/*.ts --max-warnings=0 --config .eslintrc.json --ignore-path .eslintignore",
-      "lint:fix": "eslint --fix src/**/*.ts",
-      "pretest": "tsc -p test --noEmit",
-      "posttest": "yarn lint",
-      "test": "nyc --extension .ts mocha --forbid-only test/**/*.test.ts",
-      "prepack": "yarn build"
-    },
-
-    "dependencies": {
-      "@centrifuge-commander/core": "^0.1.0",
-      "@polkadot/api": "^7.7.1",
-      "chalk": "^5.0.0",
-      "cli-ux": "^5.6.0",
-      "commander": "^9.0.0"
+  "name": "@centrifuge-commander/claims-command",
+  "description": "Command used to migrate Tinlake reward claims from standalone Centrifuge chain to a parachain (e.g. Altair)",
+  "version": "0.1.0",
+  "author": "Centrifuge Contributors <hello@centrifuge.io>",
+  "homepage": "https://github.com/centrifuge/commander#README.md",
+  "bugs": {
+    "url": "https://github.com/centrifuge/commander/issues"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "centrifuge",
+    "cli",
+    "commander",
+    "console",
+    "claims",
+    "rewards"
+  ],
+  "type": "module",
+  "main": "dist/command.js",
+  "exports": {
+    ".": "./dist/command.js",
+    "./command": "./dist/command.js",
+    "./actions/*": null,
+    "./controller": "./dist/packages/controller.js",
+    "./package.json": "./dist/package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*"
+      ]
     }
+  },
+  "repository": {
+    "type": "git",
+    "directory": "packages/commands/claims",
+    "url": "https://github.com/centrifuge/commander.git"
+  },
+  "engines": {
+    "node": ">=14.17.4"
+  },
+  "scripts": {
+    "clean": "rimraf dist node_modules tsconfig.tsbuildinfo .nyc_output",
+    "compile": "tsc --build && cp ./package.json ./dist/",
+    "build": "yarn compile",
+    "lint": "eslint src/**/*.ts --max-warnings=0 --config .eslintrc.json --ignore-path .eslintignore",
+    "lint:fix": "eslint --fix src/**/*.ts",
+    "pretest": "tsc -p test --noEmit",
+    "posttest": "yarn lint",
+    "test": "nyc --extension .ts mocha --forbid-only test/**/*.test.ts",
+    "prepack": "yarn build"
+  },
+  "dependencies": {
+    "@centrifuge-commander/core": "^0.1.0",
+    "@polkadot/api": "^7.7.1",
+    "chalk": "^5.0.0",
+    "cli-ux": "^5.6.0",
+    "commander": "^9.0.0",
+    "@polkadot/util-crypto": "^8.4.1"
+  }
 }

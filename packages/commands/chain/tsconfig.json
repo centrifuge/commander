@@ -1,16 +1,15 @@
 {
   "extends": "../../../tsconfig.base.json",
-
   "compilerOptions": {
     "composite": true,
     "outDir": "dist",
     "rootDir": "src"
   },
-  
   "references": [
-    { "path":  "../../libraries/core" }
+    {
+      "path": "../../libraries/core"
+    },
   ],
-
   "exclude": [
     "node_modules",
     "dist"
